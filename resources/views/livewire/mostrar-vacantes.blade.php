@@ -12,10 +12,13 @@
                 <div class="flex flex-col gap-3 mt-5 text-center md:flex-row items-strech md:mt-0">
                     <a href="#"
                         class="px-4 py-2 text-xs font-bold text-white uppercase rounded-lg bg-slate-800">Candidatos</a>
-                    <a href="#"
+                    <a href="{{ route('vacantes.edit', $vacante->id) }}"
                         class="px-4 py-2 text-xs font-bold text-white uppercase bg-blue-800 rounded-lg">Editar</a>
-                    <a href="#"
-                        class="px-4 py-2 text-xs font-bold text-white uppercase bg-red-600 rounded-lg">Eliminar</a>
+                    <button type="button" wire:click="$dispatch('mostrarAlerta', {{ $vacante->id }})"
+                        class="px-4 py-2 text-xs font-bold text-center text-white uppercase bg-red-800 rounded-lg dark:bg-red-600">
+                        Eliminar
+
+                    </button>
                 </div>
             </div>
         @empty
@@ -27,3 +30,34 @@
 
     </div>
 </div>
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            @this.on('mostrarAlerta', (vacanteId) => {
+                Swal.fire({
+                    title: '¿Eliminar Vacante?',
+                    text: "Una Vacante eliminada no se puede recuperar:(",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, eliminar!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // ELiminar vacante
+                        @this.call('eliminarVacante', vacanteId);
+                        Swal.fire(
+                            'Se eliminó la Vacante',
+                            'Eliminado correctamente',
+                            'success'
+                        )
+                    }
+                })
+
+            });
+        });
+    </script>
+@endpush
