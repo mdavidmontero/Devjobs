@@ -30,14 +30,14 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
                     {{-- si el usuario es reclutador puede crear vacantes --}}
-                    {{-- @can('create', App\Models\Vacante::class) --}}
-                    @if (auth()->user()->rol === 2)
+                    {{-- @if (auth()->user()->rol === 2) --}}
+                    @can('create', App\Models\Vacante::class)
                         <a class="flex flex-col items-center justify-center mr-2 text-sm font-extrabold text-white bg-indigo-600 rounded-full w-7 h-7 hover:bg-indigo-800"
                             href="{{ route('notificaciones') }}">
                             {{ auth()->user()->unreadNotifications->count() }}
                         </a>
-                    @endif
-                    {{-- @endcan --}}
+                    @endcan
+                    {{-- @endif --}}
 
 
                     <x-dropdown align="right" width="48">
