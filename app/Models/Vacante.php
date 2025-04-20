@@ -38,8 +38,9 @@ class Vacante extends Model
         return $this->hasMany(Candidato::class)->orderBy('created_at', 'DESC');
     }
 
-    // public function reclutador(){
-    //     // esta relacion es para la persona que publico la vacante
-    //     return $this ->belongsTo(User::class,'user_id');
-    // }
+    public function reclutador()
+    {
+        // esta relacion es para la persona que publico la vacante
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

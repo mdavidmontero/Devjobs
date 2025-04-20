@@ -29,6 +29,16 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
+                    {{-- si el usuario es reclutador puede crear vacantes --}}
+                    {{-- @can('create', App\Models\Vacante::class) --}}
+                    @if (auth()->user()->rol === 2)
+                        <a class="flex flex-col items-center justify-center mr-2 text-sm font-extrabold text-white bg-indigo-600 rounded-full w-7 h-7 hover:bg-indigo-800"
+                            href="{{ route('notificaciones') }}">
+                            {{ auth()->user()->unreadNotifications->count() }}
+                        </a>
+                    @endif
+                    {{-- @endcan --}}
+
 
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -107,6 +117,17 @@
                 <x-responsive-nav-link :href="route('vacantes.create')" :active="request()->routeIs('vacantes.create')">
                     {{ __('Crear Vacante') }}
                 </x-responsive-nav-link>
+                @if (auth()->user()->rol === 2)
+                    <div class="flex items-center gap-2 p-3">
+                        <a
+                            class="flex flex-col items-center justify-center text-sm font-extrabold bg-indigo-600 rounded-full w-7 h-7 hover:bg-indigo-800">
+                            {{ auth()->user()->unreadNotifications->count() }}
+                        </a>
+                        <p class="text-base font-medium text-gray-600 ">
+                            @choice('Notificacion|Notificaciones', auth()->user()->unreadNotifications->count())
+                        </p>
+                    </div>
+                @endif
             </div>
 
             <!-- Responsive Settings Options -->
